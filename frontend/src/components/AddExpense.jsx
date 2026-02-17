@@ -2,10 +2,11 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import { CATEGORIES, CATEGORY_EMOJIS } from "../utils/categories";
+import { sounds } from "../utils/sounds";
 
 const INITIAL = { title: "", amount: "", category: "Food", date: "", note: "" };
 
-export default function AddExpense({ onAdd, onClose }) {
+export default function AddExpense({ onAdd, onClose, onCelebrate }) {
   const [form, setForm] = useState(INITIAL);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,10 +18,12 @@ export default function AddExpense({ onAdd, onClose }) {
     e.preventDefault();
     if (!form.title.trim() || !form.amount || !form.date) {
       setError("⚠️ Title, amount and date are required!");
+      sounds.click();
       return;
     }
     if (Number(form.amount) <= 0) {
       setError("⚠️ Amount must be greater than 0");
+      sounds.click();
       return;
     }
 
@@ -36,8 +39,12 @@ export default function AddExpense({ onAdd, onClose }) {
         note: form.note.trim(),
       });
 
+      // 🎉 SUCCESS CELEBRATION
       setSuccess(true);
+      sounds.success();
+      onCelebrate?.(); // Trigger celebration overlay in parent
       onAdd(res.data);
+
       setTimeout(() => {
         setForm(INITIAL);
         setSuccess(false);
@@ -45,6 +52,7 @@ export default function AddExpense({ onAdd, onClose }) {
       }, 800);
     } catch (err) {
       setError(err.message);
+      sounds.click();
     } finally {
       setLoading(false);
     }
@@ -101,6 +109,7 @@ export default function AddExpense({ onAdd, onClose }) {
             value={form.title}
             onChange={set("title")}
             maxLength={80}
+            onClick={() => sounds.click()}
           />
         </div>
 
@@ -116,6 +125,7 @@ export default function AddExpense({ onAdd, onClose }) {
               step="0.01"
               value={form.amount}
               onChange={set("amount")}
+              onClick={() => sounds.click()}
             />
           </div>
           <div style={{ flex: 1 }}>
@@ -125,6 +135,7 @@ export default function AddExpense({ onAdd, onClose }) {
               type="date"
               value={form.date}
               onChange={set("date")}
+              onClick={() => sounds.click()}
             />
           </div>
         </div>
@@ -137,6 +148,7 @@ export default function AddExpense({ onAdd, onClose }) {
             style={{ width: "100%" }}
             value={form.category}
             onChange={set("category")}
+            onClick={() => sounds.click()}
           >
             {CATEGORIES.map((c) => (
               <option key={c} value={c}>{CATEGORY_EMOJIS[c]} {c}</option>
@@ -153,6 +165,7 @@ export default function AddExpense({ onAdd, onClose }) {
             value={form.note}
             onChange={set("note")}
             maxLength={200}
+            onClick={() => sounds.click()}
           />
         </div>
 
@@ -162,6 +175,7 @@ export default function AddExpense({ onAdd, onClose }) {
             className="pixel-btn"
             disabled={loading}
             style={{ flex: 1 }}
+            onClick={() => sounds.click()}
           >
             {loading ? "Saving..." : "✨ Add Expense"}
           </button>
@@ -169,7 +183,7 @@ export default function AddExpense({ onAdd, onClose }) {
             <button
               type="button"
               className="pixel-btn secondary"
-              onClick={onClose}
+              onClick={() => { sounds.click(); onClose(); }}
               style={{ flex: 0 }}
             >
               Cancel
