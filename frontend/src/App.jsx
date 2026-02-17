@@ -13,7 +13,7 @@ export default function App() {
   const [tab, setTab] = useState("dashboard");
   const [totalThisMonth, setTotalThisMonth] = useState(0);
 
-  // Fetch month total for header
+  // Always fetch the real total from server — never calculate manually
   const fetchTotal = async () => {
     try {
       const month = currentMonth();
@@ -24,16 +24,12 @@ export default function App() {
     }
   };
 
-  useEffect(() => { fetchTotal(); }, []);
-
-  // When a new expense is added from dashboard, update the header total
-  const handleAddExpense = (expense) => {
-    setTotalThisMonth((prev) => prev + expense.amount);
-  };
+  // Refetch on mount AND every time the user switches tabs
+  useEffect(() => { fetchTotal(); }, [tab]);
 
   const pages = {
-    dashboard: <Dashboard onNavigate={setTab} onAdd={handleAddExpense} />,
-    expenses: <ExpenseList />,
+    dashboard: <Dashboard onNavigate={setTab} onRefreshTotal={fetchTotal} />,
+    expenses: <ExpenseList onRefreshTotal={fetchTotal} />,
     budgets: <BudgetManager />,
     calendar: <ExpenseCalendar />,
     stats: <StatsPage />,
@@ -57,13 +53,11 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* Cute floating pixel hearts decoration */}
       <FloatingHearts />
     </div>
   );
 }
 
-// Decorative floating hearts in corners
 function FloatingHearts() {
   return (
     <>

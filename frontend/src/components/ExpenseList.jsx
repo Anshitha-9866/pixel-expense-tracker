@@ -6,7 +6,7 @@ import PixelLoader from "./PixelLoader";
 import AddExpense from "./AddExpense";
 import { CATEGORIES, CATEGORY_EMOJIS, formatAmount, currentMonth } from "../utils/categories";
 
-export default function ExpenseList() {
+export default function ExpenseList({ onRefreshTotal }) {
   const [showAdd, setShowAdd] = useState(false);
   const [filters, setFilters] = useState({
     category: "All",
@@ -25,6 +25,23 @@ export default function ExpenseList() {
     () => expenses.reduce((s, e) => s + e.amount, 0),
     [expenses]
   );
+
+  // Wrap callbacks to also refresh the header total
+  const handleAdd = (exp) => {
+    addExpense(exp);
+    setShowAdd(false);
+    onRefreshTotal?.();
+  };
+
+  const handleDelete = (id) => {
+    removeExpense(id);
+    onRefreshTotal?.();
+  };
+
+  const handleUpdate = (updated) => {
+    updateExpense(updated);
+    onRefreshTotal?.();
+  };
 
   return (
     <div style={{ maxWidth: 720, margin: "0 auto", padding: "24px 16px" }}>
@@ -52,10 +69,7 @@ export default function ExpenseList() {
             exit={{ opacity: 0, height: 0 }}
             style={{ marginBottom: 20, overflow: "hidden" }}
           >
-            <AddExpense
-              onAdd={(exp) => { addExpense(exp); setShowAdd(false); }}
-              onClose={() => setShowAdd(false)}
-            />
+            <AddExpense onAdd={handleAdd} onClose={() => setShowAdd(false)} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -63,7 +77,6 @@ export default function ExpenseList() {
       {/* Filters bar */}
       <div className="pixel-card" style={{ marginBottom: 16, padding: "14px 16px" }}>
         <div style={{ display: "flex", flexWrap: "wrap", gap: 10, alignItems: "flex-end" }}>
-          {/* Search */}
           <div style={{ flex: "1 1 160px" }}>
             <label style={labelStyle}>🔍 Search</label>
             <input
@@ -74,7 +87,6 @@ export default function ExpenseList() {
             />
           </div>
 
-          {/* Month */}
           <div style={{ flex: "0 1 140px" }}>
             <label style={labelStyle}>📅 Month</label>
             <input
@@ -85,7 +97,6 @@ export default function ExpenseList() {
             />
           </div>
 
-          {/* Category */}
           <div style={{ flex: "0 1 160px" }}>
             <label style={labelStyle}>🗂️ Category</label>
             <select
@@ -101,7 +112,6 @@ export default function ExpenseList() {
             </select>
           </div>
 
-          {/* Sort */}
           <div style={{ flex: "0 1 120px" }}>
             <label style={labelStyle}>↕️ Sort by</label>
             <select
@@ -138,10 +148,8 @@ export default function ExpenseList() {
         </span>
       </div>
 
-      {/* Error */}
       {error && <div className="pixel-alert error" style={{ marginBottom: 16 }}>{error}</div>}
 
-      {/* List */}
       {loading ? (
         <PixelLoader />
       ) : expenses.length === 0 ? (
@@ -152,8 +160,8 @@ export default function ExpenseList() {
             <ExpenseItem
               key={exp._id}
               expense={exp}
-              onDelete={removeExpense}
-              onUpdate={updateExpense}
+              onDelete={handleDelete}
+              onUpdate={handleUpdate}
             />
           ))}
         </AnimatePresence>

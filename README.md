@@ -160,12 +160,3 @@ CSS variables in `index.css`:
 
 ---
 
-## 💡 Bug Fixes from Original
-
-1. **Date timezone drift** — Dates stored as `YYYY-MM-DD` strings, never converted through `new Date()` preventing off-by-one day bugs
-2. **Missing validation** — All fields validated on both client and server with user-friendly messages
-3. **Broken imports** — All imports cleaned up, consistent path structure
-4. **ExpenseCalendar date mismatch** — Old code used `new Date(e.date).toDateString()` which caused timezone drift; now uses strict string comparison
-5. **ExpenseChart wrong field** — Was reading `e.expenseDate` instead of `e.date`; fixed
-6. **No error handling** — All API calls wrapped with proper error states shown in UI
-7. **MUI dependency without install** — All deps explicitly listed in `package.json`

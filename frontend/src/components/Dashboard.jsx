@@ -7,7 +7,7 @@ import PixelLoader from "./PixelLoader";
 import AddExpense from "./AddExpense";
 import api from "../api";
 
-export default function Dashboard({ onNavigate, onAdd }) {
+export default function Dashboard({ onNavigate, onRefreshTotal }) {
   const month = currentMonth();
   const { stats, loading: statsLoading } = useStats(month);
   const { budgets, loading: budgetsLoading } = useBudgets(month);
@@ -23,7 +23,7 @@ export default function Dashboard({ onNavigate, onAdd }) {
 
   const handleAdd = (exp) => {
     setRecentExpenses((prev) => [exp, ...prev].slice(0, 5));
-    onAdd?.(exp);
+    onRefreshTotal?.();
     setShowAdd(false);
   };
 
@@ -75,7 +75,7 @@ export default function Dashboard({ onNavigate, onAdd }) {
       <div style={{ marginBottom: 24 }}>
         {showAdd ? (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }}>
-            <AddExpense onAdd={handleAdd} onClose={() => setShowAdd(false)} />
+            <AddExpense onAdd={(exp) => { setRecentExpenses(p => [exp,...p].slice(0,5)); onRefreshTotal?.(); }} onClose={() => setShowAdd(false)} />
           </motion.div>
         ) : (
           <button className="pixel-btn" onClick={() => setShowAdd(true)} style={{ width: "100%", fontSize: 9, padding: "14px" }}>
