@@ -1,0 +1,331 @@
+/* ═══════════════════════════════════════════════════
+   PIXEL EXPENSE TRACKER — Global Styles
+   Pink Cute RPG Theme
+   ═══════════════════════════════════════════════════ */
+
+:root {
+  /* Pink Palette */
+  --pink-50: #fff0f6;
+  --pink-100: #fce7f3;
+  --pink-200: #fbcfe8;
+  --pink-300: #f9a8d4;
+  --pink-400: #f472b6;
+  --pink-500: #ec4899;
+  --pink-600: #db2777;
+  --pink-700: #be185d;
+
+  /* Neutrals */
+  --black: #1a0a14;
+  --white: #fffaf9;
+  --gray-100: #f5f0f2;
+  --gray-200: #e8dde2;
+  --gray-400: #9b8a92;
+
+  /* Category colours */
+  --cat-food: #fb923c;
+  --cat-travel: #38bdf8;
+  --cat-shopping: #a78bfa;
+  --cat-rent: #4ade80;
+  --cat-health: #f87171;
+  --cat-entertainment: #fbbf24;
+  --cat-other: #94a3b8;
+
+  /* Fonts */
+  --font-pixel: "Press Start 2P", monospace;
+  --font-display: "VT323", monospace;
+
+  /* Shadows */
+  --pixel-shadow: 4px 4px 0px var(--black);
+  --pixel-shadow-sm: 2px 2px 0px var(--black);
+  --pixel-shadow-pink: 4px 4px 0px var(--pink-600);
+
+  /* Borders */
+  --border: 3px solid var(--black);
+  --border-thin: 2px solid var(--black);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--font-pixel);
+  background-color: var(--pink-50);
+  background-image:
+    radial-gradient(circle at 20% 20%, #fce7f322 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, #fbcfe822 0%, transparent 50%);
+  color: var(--black);
+  min-height: 100vh;
+  /* Pixel grid background */
+  background-attachment: fixed;
+}
+
+/* Pixel checkerboard background subtle pattern */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      rgba(236, 72, 153, 0.04) 31px,
+      rgba(236, 72, 153, 0.04) 32px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 31px,
+      rgba(236, 72, 153, 0.04) 31px,
+      rgba(236, 72, 153, 0.04) 32px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--pink-100); }
+::-webkit-scrollbar-thumb {
+  background: var(--pink-400);
+  border: 2px solid var(--black);
+}
+
+/* ── Pixel Button ── */
+.pixel-btn {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 10px 16px;
+  border: var(--border);
+  background: var(--pink-400);
+  color: var(--white);
+  cursor: pointer;
+  box-shadow: var(--pixel-shadow);
+  transition: all 0.1s;
+  image-rendering: pixelated;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.pixel-btn:hover {
+  background: var(--pink-500);
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px var(--black);
+}
+
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px var(--black);
+}
+
+.pixel-btn.secondary {
+  background: var(--white);
+  color: var(--black);
+}
+
+.pixel-btn.danger {
+  background: #ef4444;
+}
+
+.pixel-btn.success {
+  background: #22c55e;
+}
+
+/* ── Pixel Card ── */
+.pixel-card {
+  background: var(--white);
+  border: var(--border);
+  box-shadow: var(--pixel-shadow);
+  padding: 20px;
+}
+
+/* ── Pixel Input ── */
+.pixel-input {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 10px 12px;
+  border: var(--border);
+  background: var(--white);
+  color: var(--black);
+  width: 100%;
+  outline: none;
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1);
+  letter-spacing: 0.3px;
+}
+
+.pixel-input:focus {
+  border-color: var(--pink-500);
+  box-shadow: inset 2px 2px 0px rgba(0,0,0,0.1), 0 0 0 2px var(--pink-200);
+}
+
+.pixel-input::placeholder { color: var(--gray-400); }
+
+/* ── Pixel Select ── */
+.pixel-select {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  padding: 10px 12px;
+  border: var(--border);
+  background: var(--white);
+  color: var(--black);
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%231a0a14'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 30px;
+}
+
+/* ── Pixel Tag / Badge ── */
+.pixel-tag {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  padding: 4px 8px;
+  border: 2px solid var(--black);
+  display: inline-block;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+/* ── Pixel Progress Bar ── */
+.pixel-progress {
+  height: 16px;
+  border: var(--border-thin);
+  background: var(--pink-100);
+  position: relative;
+  overflow: hidden;
+}
+
+.pixel-progress-fill {
+  height: 100%;
+  transition: width 0.4s ease;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--pink-400) 0px,
+    var(--pink-400) 6px,
+    var(--pink-500) 6px,
+    var(--pink-500) 8px
+  );
+}
+
+.pixel-progress-fill.danger {
+  background: repeating-linear-gradient(
+    90deg,
+    #ef4444 0px,
+    #ef4444 6px,
+    #dc2626 6px,
+    #dc2626 8px
+  );
+}
+
+.pixel-progress-fill.warning {
+  background: repeating-linear-gradient(
+    90deg,
+    #f59e0b 0px,
+    #f59e0b 6px,
+    #d97706 6px,
+    #d97706 8px
+  );
+}
+
+/* ── Loader ── */
+.pixel-loader {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.pixel-loader div {
+  width: 12px;
+  height: 12px;
+  background: var(--pink-400);
+  border: 2px solid var(--black);
+  animation: pixelBounce 0.6s ease infinite alternate;
+}
+
+.pixel-loader div:nth-child(2) { animation-delay: 0.2s; background: var(--pink-300); }
+.pixel-loader div:nth-child(3) { animation-delay: 0.4s; background: var(--pink-200); }
+
+@keyframes pixelBounce {
+  to { transform: translateY(-8px); }
+}
+
+/* ── Pixel Toast / Alert ── */
+.pixel-alert {
+  font-family: var(--font-pixel);
+  font-size: 8px;
+  padding: 12px 16px;
+  border: var(--border);
+  letter-spacing: 0.3px;
+}
+
+.pixel-alert.error {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #b91c1c;
+}
+
+.pixel-alert.success {
+  background: #dcfce7;
+  border-color: #22c55e;
+  color: #15803d;
+}
+
+/* ── Animations ── */
+@keyframes pixelFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pixelSlideIn {
+  from { opacity: 0; transform: translateX(-16px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pixelFloat {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes pixelPulse {
+  0%, 100% { box-shadow: var(--pixel-shadow); }
+  50% { box-shadow: var(--pixel-shadow-pink); }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+.animate-fade-in { animation: pixelFadeIn 0.3s ease forwards; }
+.animate-slide-in { animation: pixelSlideIn 0.3s ease forwards; }
+.animate-float { animation: pixelFloat 3s ease-in-out infinite; }
+
+/* ── Typography helpers ── */
+.text-pixel { font-family: var(--font-pixel); }
+.text-display { font-family: var(--font-display); font-size: 1.4em; }
+.text-xs-pixel { font-family: var(--font-pixel); font-size: 8px; }
+.text-sm-pixel { font-family: var(--font-pixel); font-size: 10px; }
+
+/* ── Layout helpers ── */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-2 { gap: 8px; }
+.gap-3 { gap: 12px; }
+.gap-4 { gap: 16px; }
+.w-full { width: 100%; }
+
+/* ── Override MUI to match pixel theme ── */
+.MuiDialog-paper {
+  border: 3px solid var(--black) !important;
+  box-shadow: 6px 6px 0px var(--black) !important;
+  border-radius: 0 !important;
+}
